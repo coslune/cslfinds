@@ -1,171 +1,415 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>COSLUNE FINDS</title>
-
+  <title>ADZM Finds | Premium Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: rgba(20, 28, 47, 0.6);
+      --accent-color: #00e5ff;
+      --accent-glow: rgba(0, 229, 255, 0.4);
+      --text-main: #ffffff;
+      --text-muted: #8fa0dd;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(0, 229, 255, 0.3);
     }
 
-    body{
-      background:#0b0b0f;
-      color:white;
-      font-family:Arial,sans-serif;
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #161f38 0%, var(--bg-dark) 70%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    header{
-      position:sticky;
-      top:0;
-      z-index:1000;
-      background:rgba(0,0,0,0.8);
-      backdrop-filter:blur(20px);
-      padding:20px;
-      text-align:center;
-      border-bottom:1px solid rgba(255,255,255,0.08);
+    .header {
+      position: sticky; top: 0; 
+      background: rgba(11, 15, 25, 0.75);
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px);
+      display: flex; justify-content: space-between; 
+      align-items: center; padding: 15px 25px; 
+      border-bottom: 1px solid var(--border-color); z-index: 1000;
     }
+    .logo { font-weight: 800; font-size: 24px; letter-spacing: 1px; }
+    .logo span { color: var(--accent-color); text-shadow: 0 0 10px var(--accent-glow); }
 
-    header h1{
-      font-size:28px;
-      letter-spacing:2px;
+    .banner { text-align: center; padding: 30px 15px 15px; }
+    .main-title { color: #fff; font-weight: 800; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; display: block; }
+    .main-title span { color: var(--accent-color); }
+    .warning { color: #ff4d4d; font-size: 11px; font-weight: 700; display: block; margin-top: 8px; opacity: 0.9; letter-spacing: 0.5px; }
+
+    .social-nav {
+      display: flex; justify-content: center; gap: 15px; padding: 15px;
+      flex-wrap: wrap; max-width: 650px; margin: auto;
     }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:25px;
-      padding:25px;
-      max-width:1400px;
-      margin:auto;
+    .social-item {
+      display: flex; flex-direction: column; align-items: center;
+      text-decoration: none; color: white; font-size: 11px; font-weight: 700;
+      transition: all 0.3s ease; width: 95px; text-align: center;
     }
-
-    .card{
-      background:#111318;
-      border-radius:25px;
-      overflow:hidden;
-      transition:0.25s ease;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.06);
+    .social-item:hover { transform: translateY(-4px); }
+    .social-item:hover span { color: var(--accent-color); text-shadow: 0 0 8px var(--accent-glow); }
+    .social-item img {
+      width: 55px; height: 55px; border-radius: 14px; margin-bottom: 8px;
+      border: 1px solid var(--border-color); background: rgba(255,255,255,0.03);
+      object-fit: contain; padding: 8px; transition: all 0.3s ease;
     }
+    .social-item:hover img { border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-glow); }
 
-    .card:hover{
-      transform:translateY(-8px);
-      border-color:#00d1ff;
+    .controls {
+      padding: 15px 20px; display: flex; gap: 12px; max-width: 1200px; margin: auto;
     }
-
-    .card img{
-      width:100%;
-      height:320px;
-      object-fit:cover;
-      display:block;
+    .search-input {
+      flex: 2; padding: 14px 20px; border-radius: 12px; border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.04); color: white; outline: none; 
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      font-family: 'Montserrat', sans-serif; transition: all 0.3s; font-size: 14px;
     }
-
-    .card-body{
-      padding:18px;
+    .search-input:focus { border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
+    
+    .sort-select {
+      flex: 1; background: #141c2f; color: white; border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 14px; cursor: pointer; font-family: 'Montserrat', sans-serif;
+      outline: none; font-size: 14px; transition: all 0.3s;
     }
+    .sort-select:focus { border-color: var(--accent-color); }
 
-    .card-body h2{
-      font-size:18px;
-      margin-bottom:10px;
+    .grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 15px; padding: 20px; max-width: 1200px; margin: auto;
     }
-
-    .price{
-      color:#00d1ff;
-      font-size:20px;
-      font-weight:bold;
+    .card {
+      background: var(--bg-card); border-radius: 16px;
+      overflow: hidden; border: 1px solid var(--border-color);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; flex-direction: column; text-decoration: none; color: inherit;
     }
-
-    .button{
-      margin-top:15px;
-      display:inline-block;
-      padding:10px 18px;
-      background:#00d1ff;
-      color:black;
-      text-decoration:none;
-      border-radius:12px;
-      font-weight:bold;
-      transition:0.2s;
+    .card:hover { 
+      transform: translateY(-5px); 
+      border-color: var(--border-hover); 
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 229, 255, 0.1); 
     }
-
-    .button:hover{
-      transform:scale(1.05);
+    .card-img-wrapper { width: 100%; height: 150px; overflow: hidden; background: #070a12; position: relative; }
+    .card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .card:hover img { transform: scale(1.06); }
+    
+    .card-body { 
+      padding: 14px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;
     }
-
-    @media(max-width:768px){
-
-      .grid{
-        grid-template-columns:1fr;
-        padding:15px;
-      }
-
-      .card img{
-        height:260px;
-      }
-
-      header h1{
-        font-size:22px;
-      }
-
+    .card-body .name { 
+      font-weight: 600; font-size: 12px; line-height: 1.4; color: #fff;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: 8px; height: 34px;
     }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .card-body .price { color: var(--accent-color); font-weight: 800; font-size: 15px; text-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
+    .buy-btn { background: rgba(0, 229, 255, 0.1); color: var(--accent-color); padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(0, 229, 255, 0.2); transition: 0.2s; }
+    .card:hover .buy-btn { background: var(--accent-color); color: #000; }
 
+    #popupHipo {
+      position: fixed; inset: 0; background: rgba(3, 5, 10, 0.85);
+      display: none; align-items: center; justify-content: center; z-index: 9999;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .hipo-popup {
+      background: #111827; color: white; width: 90%; max-width: 380px;
+      padding: 35px 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 229, 255, 0.3);
+      position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .hipo-popup h2 { font-weight: 800; font-size: 22px; color: var(--accent-color); margin-top: 0; }
+    .hipo-popup p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px; }
+    .hipo-btn {
+      display: block; padding: 14px; border-radius: 10px; font-weight: 800; 
+      text-decoration: none; background: var(--accent-color); color: #000;
+      box-shadow: 0 4px 15px var(--accent-glow); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .hipo-btn:hover { transform: scale(1.02); box-shadow: 0 6px 20px var(--accent-glow); }
+    .hipo-close { position: absolute; top: 14px; right: 14px; background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; transition: 0.2s; }
+    .hipo-close:hover { color: #fff; }
+
+    #mobileMenu {
+      position: fixed; top: 75px; right: 25px; background: rgba(17, 24, 39, 0.95); 
+      border: 1px solid var(--border-color); border-radius: 14px; display: none; 
+      flex-direction: column; z-index: 1001; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); overflow: hidden;
+    }
+    .menu-item { padding: 15px 35px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; text-align: center; }
+    .menu-item:hover { background: rgba(255,255,255,0.05); color: var(--accent-color); }
+    .menu-item.active { color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
+
+    @media (min-width: 768px) { 
+      .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 25px; } 
+      .card-img-wrapper { height: 180px; }
+      .social-item { font-size: 12px; width: 120px; }
+      .social-item img { width: 65px; height: 65px; }
+      .main-title { font-size: 32px; }
+    }
   </style>
-
 </head>
 <body>
 
-<header>
-  <h1>ADZM FINDS</h1>
+<header class="header">
+  <div class="logo">ADZM<span>.</span>FINDS</div>
+  <div onclick="toggleMenu()" style="cursor:pointer; color:var(--accent-color); font-size:28px; padding: 5px;">&#9776;</div>
 </header>
 
-<div class="grid">
+<div id="mobileMenu">
+  <div class="menu-item active" id="btn-articles" onclick="switchTab('articles')">Articles</div>
+  <div class="menu-item" id="btn-vendeurs" onclick="switchTab('vendeurs')">Vendeurs</div>
+</div>
 
-  <div class="card">
+<div class="banner">
+  <span class="main-title">Meilleure Sélection <span>2026</span> 🔥</span>
+  <span class="warning">⚠️ CERTAINS LIENS PEUVENT ÊTRE SUPPRIMÉS OU EN RUPTURE</span>
+</div>
 
-```
-<img src="https://i.imgur.com/glqnO1W.jpeg">
-
-<div class="card-body">
-
-  <h2>Pull Nike Tech</h2>
-
-  <div class="price">20€</div>
-
-  <a class="button" href="https://google.com" target="_blank">
-    Voir
+<nav class="social-nav">
+  <a href="https://www.tiktok.com/@adzm.finds" target="_blank" class="social-item">
+    <img src="https://i.imgur.com/w0MAvg6.png" alt="TikTok">
+    <span>TikTok</span>
   </a>
-
-</div>
-```
-
-  </div>
-
-  <div class="card">
-
-```
-<img src="https://i.imgur.com/vUvVsy1.jpeg">
-
-<div class="card-body">
-
-  <h2>Nike Running</h2>
-
-  <div class="price">15€</div>
-
-  <a class="button" href="https://google.com" target="_blank">
-    Voir
+  <a href="https://t.me/adzmhipofinds" target="_blank" class="social-item">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/960px-Telegram_2019_Logo.svg.png" alt="Telegram">
+    <span>Telegram</span>
   </a>
+  <a href="https://discord.gg/hh7FrQzGEH" target="_blank" class="social-item">
+    <img src="https://i.imgur.com/aj1aMEQ.png" alt="Discord">
+    <span>Discord FR</span>
+  </a>
+  <a href="https://m.hipobuy.com/pages/register/index?inviteCode=E6EMQHWWA" target="_blank" class="social-item">
+    <img src="https://i.imgur.com/6zUvchk.png" alt="Hipobuy">
+    <span>Hipobuy</span>
+  </a>
+</nav>
 
+<div class="controls">
+  <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un article..." onkeyup="renderAll()">
+  <select id="sortOption" class="sort-select" onchange="renderAll()">
+    <option value="recent">Plus récent</option>
+    <option value="old">Plus ancien</option>
+    <option value="low">Prix croissant</option>
+    <option value="high">Prix décroissant</option>
+  </select>
 </div>
-```
 
+<div id="articles" class="tab-content"><div class="grid" id="articleGrid"></div></div>
+<div id="vendeurs" class="tab-content" style="display:none;"><div class="grid" id="vendeurGrid"></div></div>
+
+<div id="popupHipo">
+  <div class="hipo-popup">
+    <button class="hipo-close" onclick="closePopup()">✕</button>
+    <h2>REJOINS HIPOBUY !</h2>
+    <p>Inscris-toi dès maintenant sur Hipobuy pour obtenir ton pack de coupons exclusifs.</p>
+    <a href="https://m.hipobuy.com/pages/register/index?inviteCode=E6EMQHWWA" target="_blank" class="hipo-btn">S'INSCRIRE ICI</a>
+    <label style="display:block; margin-top:20px; font-size:12px; color:#8fa0dd; cursor:pointer;">
+      <input type="checkbox" id="noMore" style="margin-right: 6px;"> Ne plus afficher
+    </label>
   </div>
-
 </div>
+
+<script>
+  let currentTab = 'articles';
+  let articles = [];
+  let vendeurs = [];
+
+  function addArticle(name, price, image, link){
+    articles.push({name, price: parseFloat(price), image, link, id: articles.length});
+  }
+  function addVendeur(n,i,l){ 
+    vendeurs.push({name:n, image:i, link:l, id: vendeurs.length}); 
+  }
+
+  // --- BASE DE DONNÉES ARTICLES ---
+  addArticle("Pull Nike Tech (je conseille pas trop le gris)",16.00,"https://i.imgur.com/glqnO1W.jpeg","https://hipobuy.com/pages/goods/details?id=915958135358&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("T-shirt Nike Running",5.00,"https://i.imgur.com/vUvVsy1.jpeg","https://hipobuy.com/pages/goods/details?id=979095603924&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Bas Nike Trail",16.00,"https://cdn2.hipobuy.com/prod/order/D2601120671641701/checkPhotos/20260116/processed_9cea41b4-5cd2-480b-950b-c3cd7226cdf8_w.webp","https://hipobuy.com/pages/goods/details?id=7549390543&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("Therma fit verte/noire sans manche",21.00,"https://cdn2.hipobuy.com/prod/order/D2601120465853267/checkPhotos/20260117/processed_11c9ec3b-8c94-4c5c-99d7-afd8b1aee53c_w.webp","https://hipobuy.com/pages/goods/details?spuNo=997464205301&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Therma-fit noire",23.00,"https://cdn2.hipobuy.com/prod/order/D2602280707202574/checkPhotos/20260305/processed_00e0df7c-b8fc-4d66-a4bc-fb112da912be_w.webp","https://hipobuy.com/pages/goods/details?id=990993570840&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Running nike essentiel",20.00,"https://cdn2.hipobuy.com/prod/order/D2510121784696573/checkPhotos/20251016/processed_29fae3a9-222e-4993-ac3e-47ed980a5fdf_w.webp","https://hipobuy.com/pages/goods/details?id=628181742021&channel=TAOBAO&inviteCode=E6EMQHWWA");
+  addArticle("Chaussettes nike",0.40,"https://cdn2.hipobuy.com/prod/order/D2601160529214494/checkPhotos/20260118/processed_a3fcf3ab-140e-4757-8306-6047e9d0910d_w.webp","https://hipobuy.com/pages/goods/details?id=870117351797&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Gants nike",5.00,"https://cdn2.hipobuy.com/prod/order/D2601110833682886/checkPhotos/20260115/processed_21cc5281-8cec-46d2-aff2-b5437819bf7b_w.webp","https://hipobuy.com/pages/goods/details?id=908715264109&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Cagoule nike",4.00,"https://cdn2.hipobuy.com/prod/order/D2601150787671179/checkPhotos/20260118/processed_73638d3f-6baf-4405-ac17-d70c3b004313_w.webp","https://hipobuy.com/pages/goods/details?spuNo=908263588321&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Demi-zip nike trail",16.00,"https://cdn2.hipobuy.com/prod/order/D2601120052493608/checkPhotos/20260115/processed_6060feae-e391-4ec6-818e-9caa7e66419f_w.webp","https://hipobuy.com/pages/goods/details?id=7630008027&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("Pull tokyo running",19.00,"https://cdn2.hipobuy.com/prod/order/D2601090961413720/checkPhotos/20260115/processed_07e32dba-14f2-4877-b158-e841d270ddb1_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7629809614&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Running nike tokyo v1",19.00,"https://cdn2.hipobuy.com/prod/order/D2601120671128575/checkPhotos/20260118/processed_903e2321-d65a-46e4-895b-6037ca025e00_w.webp","https://hipobuy.com/pages/goods/details?id=7643925203&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("Maillot psg 25-26",14.00,"https://cdn2.hipobuy.com/prod/order/D2512271898906633/checkPhotos/20260101/processed_94ace29f-dd55-4f58-ba53-8355013277c3_w.webp","https://hipobuy.com/pages/goods/details?spuNo=940606262535&channel=1&inviteCode=E6EMQHWWA");
+  addArticle("Pull nike trail montagne",18.00,"https://cdn2.hipobuy.com/prod/order/D2601120260244503/checkPhotos/20260118/processed_9cad959f-98ae-4172-b4c7-e2705d84568d_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7606245819&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Bas nike aeroswift",15.00,"https://cdn2.hipobuy.com/prod/order/D2602200753544641/checkPhotos/20260301/processed_6c7013a2-1cdd-4199-8a07-64faf9e553d9_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7540536587&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Haut nike tech gris 2 poches",20.00,"https://cdn2.hipobuy.com/prod/order/D2512111978174943/checkPhotos/20251216/processed_8190f910-e364-4452-a1d1-611c9dd82899_w.webp","https://hipobuy.com/pages/goods/details?channelId=weidian&spuNo=7542253414&inviteCode=E6EMQHWWA");
+  addArticle("Maillot de foot divers 25-26",4.00,"https://cdn2.hipobuy.com/prod/order/D2512200712121744/checkPhotos/20251224/processed_ba1622cf-c96f-4547-aa1f-af1229428d06_w.webp","https://hipobuy.com/pages/goods/details?id=895622213007&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Bas phenom elite (de QWQ)",21.00,"https://cdn2.hipobuy.com/prod/order/D2601140338894432/checkPhotos/20260117/processed_7325e8cc-0594-4b11-8758-456338ff5704_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7646763614&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike trail windrunner noire",26.00,"https://cdn2.hipobuy.com/prod/order/D2601150584437804/checkPhotos/20260118/processed_9b0aefb7-058c-40cf-b706-9b1d73324e36_w.webp","https://hipobuy.com/pages/goods/details?id=997439358804&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Haut running zabuza",17.00,"https://cdn2.hipobuy.com/prod/order/D2601130499537327/checkPhotos/20260116/processed_0a3cd025-faac-48ca-9d22-7b9c0f994023_w.webp","https://hipobuy.com/pages/goods/details?id=984670446031&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Veste canada goose",52.00,"https://cdn2.hipobuy.com/prod/order/D2601070375558950/checkPhotos/20260110/processed_40e646a2-9df6-41da-afad-c26d25d2619a_w.webp","https://hipobuy.com/pages/goods/details?id=737855341853&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Pantalon asics",7.00,"https://cdn2.hipobuy.com/prod/order/D2512290443942245/checkPhotos/20251231/processed_1bcb1aba-7647-4cff-8ef5-1267635e15dd_w.webp","https://hipobuy.com/pages/goods/details?spuNo=732787207604&channel=1&inviteCode=E6EMQHWWA");
+  addArticle("Yezzy 700 v3",40.00,"https://cdn2.hipobuy.com/prod/order/D2601120257814173/checkPhotos/20260118/processed_19baac3f-1257-4149-9a0e-0bd869a1b723_w.webp","https://hipobuy.com/pages/goods/details?id=7619848148&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("Pull nike trail", 18, "https://cdn2.hipobuy.com/prod/order/D2601141857445800/checkPhotos/20260119/processed_596245eb-97a9-4bd7-b5df-2f065a54e1b8_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7541137527&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Bonnet LV", 20, "https://i.imgur.com/yGks5hB.jpeg", "https://hipobuy.com/pages/goods/details?channelId=weidian&spuNo=7648802049&inviteCode=E6EMQHWWA");
+  addArticle("Veste lacoste", 25, "https://i.imgur.com/j7xx1oU.jpeg", "https://hipobuy.com/pages/goods/details?channelId=weidian&spuNo=7541896957&inviteCode=E6EMQHWWA");
+  addArticle("Bas nike trailwind", 15, "https://cdn2.hipobuy.com/prod/order/D2601160426426834/checkPhotos/20260119/processed_2063f0cf-8327-47eb-92fb-29cc07335c16_w.webp", "https://hipobuy.com/pages/goods/details?id=7650063260&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("T-shirt under", 3, "https://cdn2.hipobuy.com/prod/order/D2601180694673911/checkPhotos/20260120/processed_43cffbe8-f7b4-403e-a311-ccc2347129d5_w.webp", "https://hipobuy.com/pages/goods/details?id=833815144229&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Demi-zip division", 23, "https://cdn2.hipobuy.com/prod/order/D2601171769109606/checkPhotos/20260120/processed_39b43db9-e4a6-44fd-ae86-24731535e117_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7549454095&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Dior B22", 102, "https://cdn2.hipobuy.com/prod/order/D2601150480725893/checkPhotos/20260118/processed_10932142-644d-4162-84d3-28469a16713d_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7509827248&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Saucony omni 9", 24, "https://cdn2.hipobuy.com/prod/order/D2601170558866592/checkPhotos/20260120/processed_db5d9f60-335a-43af-919d-a424ca7ba98e_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7612313855&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Sac nike élite", 11, "https://cdn2.hipobuy.com/prod/order/D2512271798137103/checkPhotos/20260102/processed_656c9d4b-5458-4e2b-a1c4-74f309670489_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7503933863&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("T-shirt nike trail", 11, "https://cdn2.hipobuy.com/prod/order/D2601090347536293/checkPhotos/20260112/processed_12d2a8ca-d89a-4eda-ada8-8b773200a888_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7458089095&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Bas nike swoosh noir", 7, "https://cdn2.hipobuy.com/prod/order/D2601160630243978/checkPhotos/20260119/processed_b5587037-6b47-4a70-ba59-bc2118508e7d_w.webp", "https://hipobuy.com/pages/goods/details?id=6174720733&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike tech aviateur 1 poche", 16, "https://cdn2.hipobuy.com/prod/order/D2601081734189438/checkPhotos/20260111/processed_18306279-410a-40d9-9536-730e9c0df8aa_w.webp", "https://hipobuy.com/pages/goods/details?id=990902085975&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Bas division araignée (lightning)", 18, "https://cdn2.hipobuy.com/prod/order/D2601160630347829/checkPhotos/20260120/processed_9c326876-0cbd-498a-be25-02c87e0e12d0_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7558177024&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Casquette fendi", 16, "https://cdn2.hipobuy.com/prod/order/D2601130088916830/checkPhotos/20260115/processed_fe9ade8c-ddd2-4f46-aded-25a9ac5c46d8_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=901891973692&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Coque stone island", 0.40, "https://cdn2.hipobuy.com/prod/order/D2601171869575336/checkPhotos/20260119/processed_98812c00-62a2-45e7-9820-ad45363699bd_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=789759931749&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Veste therma-fit (QUALI DE FOU)", 40, "https://cdn2.hipobuy.com/prod/order/D2601141354513675/checkPhotos/20260120/processed_873c0f05-7809-4b40-9dc5-946c17d5bb2f_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7599744664&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike running division", 22, "https://cdn2.hipobuy.com/prod/order/D2601091563878903/checkPhotos/20260112/processed_79eb5ac0-971b-4b47-b9e1-dc08c72ccb57_w.webp", "https://hipobuy.com/pages/goods/details?id=995864933775&channel=TAOBAO&inviteCode=E6EMQHWWA");
+  addArticle("Coque cp company", 0.52, "https://cdn2.hipobuy.com/prod/order/D2601160321992742/checkPhotos/20260119/processed_5e12a8b8-1ba5-42c1-bfce-9b4bc46b7245_w.webp", "https://hipobuy.com/pages/goods/details?id=812489813244&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Veste under", 16, "https://cdn2.hipobuy.com/prod/order/D2510270071459494/checkPhotos/20251030/processed_6eced90e-6e4f-4d48-83bf-092aa02067a1_w.webp", "https://hipobuy.com/pages/goods/details?id=7395589667&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("Veste cp company", 40, "https://cdn2.hipobuy.com/prod/order/D2512302177983922/checkPhotos/20260106/processed_ea88fd96-b024-4ff9-add2-723698299db3_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7614181309&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Tn nike air max", 36, "https://cdn2.hipobuy.com/prod/order/D2511290050428629/checkPhotos/20251203/processed_c8adda2f-3f93-4026-a419-753e0b55757a_w.webp", "https://hipobuy.com/pages/goods/details?channelId=weidian&inviteCode=X2JFX9V8U&spuNo=7531626943&inviteCode=E6EMQHWWA");
+  addArticle("Airpods max", 64, "https://i.imgur.com/R47iHQF.jpeg", "https://hipobuy.com/pages/goods/details?channelId=weidian&spuNo=7121456286&inviteCode=E6EMQHWWA");
+  addArticle("Montre g-shock", 14, "https://cdn2.hipobuy.com/prod/order/D2601131723261117/checkPhotos/20260116/processed_1c330948-17e3-4b87-9cf1-90e390527c79_w.webp", "https://hipobuy.com/pages/goods/details?channel=WEIDIAN&id=6545549479&inviteCode=E6EMQHWWA");
+  addArticle("Asics gel nyc", 20, "https://cdn2.hipobuy.com/prod/order/D2601152310625889/checkPhotos/20260118/processed_02be3558-40a9-4829-87ab-d24aa7552b67_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7629795834&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Demi-zip cp company", 32, "https://cdn2.hipobuy.com/prod/order/D2601090453015604/checkPhotos/20260115/processed_2f1c60dd-41de-4926-9621-0f28921b04fa_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7652511629&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Pull cp company", 25, "https://cdn2.hipobuy.com/prod/order/D2601140443021977/checkPhotos/20260118/processed_81731a73-cb95-4e2c-9f5b-9b2b4d6e0849_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7602383776&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("T-shirt compression nike", 4, "https://cdn2.hipobuy.com/prod/order/D2601162042328461/checkPhotos/20260119/processed_d414fc12-b624-4cbb-87f6-3fd3e0864a83_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=884281216899&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Pull ralph lauren", 16, "https://cdn2.hipobuy.com/prod/order/D2601172379826310/checkPhotos/20260120/processed_976087aa-0ebd-4334-a0ec-d6e340e8a3e5_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=891428294916&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Ensemble running nike short et t-shirt", 9, "https://cdn2.hipobuy.com/prod/order/D2601162042516129/checkPhotos/20260119/processed_a8f0865b-e9ef-4c08-8808-817c133e16b2_w.webp", "https://hipobuy.com/pages/goods/details?id=979088375841&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Ensemble nike tech", 23, "https://cdn2.hipobuy.com/prod/order/D2512022355369580/checkPhotos/20251206/processed_caa96242-743b-4603-952b-8df90eac7437-1_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=856698727489&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Pull nike berlin", 29, "https://i.imgur.com/Zm3E9DZ.jpeg", "https://hipobuy.com/pages/goods/details?spuNo=7666641554&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Pull under armour", 29, "https://cdn2.hipobuy.com/prod/order/D2601151592739271/checkPhotos/20260118/processed_06e5c041-3cbe-4907-8241-9824d616e1d9_w.webp", "https://hipobuy.com/pages/goods/details?id=805721764503&channel=TAOBAO&inviteCode=E6EMQHWWA");
+  addArticle("Bas nike tech large 2 poches", 17, "https://cdn2.hipobuy.com/prod/order/D2601162143572068/checkPhotos/20260120/processed_fdcfac2c-bd4f-4adf-913a-a761a452423b_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=763095997354&channel=1&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike running couleur", 30, "https://cdn2.hipobuy.com/prod/order/D2601152198427385/checkPhotos/20260119/processed_6233f42e-b48f-4a66-9fc0-99048821245b_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7538826494&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Short under", 4, "https://cdn2.hipobuy.com/prod/order/D2601150685224104/checkPhotos/20260119/processed_e726b627-f2af-4aca-a42d-474fa0b20cc5_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=800226167157&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Bas division araignee (PJS V2)", 19, "https://cdn2.hipobuy.com/prod/order/D2601151996212415/checkPhotos/20260119/processed_0d7d8dd5-cbb6-483a-843c-9be3b5f140e7_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7606084595&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("T-shirt casablanca", 8, "https://cdn2.hipobuy.com/prod/order/D2601172073776764/checkPhotos/20260119/processed_a40d5a1f-b513-4a72-8383-02c0744dd9f6_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=704265368581&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Nike P-6000 (plusieurs couleurs)", 23, "https://cdn2.hipobuy.com/prod/order/D2601100278313631/checkPhotos/20260114/processed_4dd1cd33-199b-4d0c-b139-f9b9579bbfc2_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7614415518&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Yezzy slides", 12, "https://cdn2.hipobuy.com/prod/order/D2601120464514319/checkPhotos/20260117/processed_23f82f38-8051-4b27-a857-c55671e8c974_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7611465339&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike running division flash", 27, "https://cdn2.hipobuy.com/prod/order/D2601170150684374/checkPhotos/20260120/processed_ae2e7e5a-01c1-43b3-8eee-e887dcff235e_w.webp", "https://hipobuy.com/pages/goods/details?id=986005871117&channel=1688&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike running DYE", 26, "https://cdn2.hipobuy.com/prod/order/D2601150274623072/checkPhotos/20260120/processed_c60f953c-c75d-438c-81c1-0d6a19ba9362_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7658577347&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Bas running berlin", 19, "https://cdn2.hipobuy.com/prod/order/D2601171972704133/checkPhotos/20260120/processed_b9a7f084-183f-4797-971c-5647ede17118_w.webp", "https://hipobuy.com/pages/goods/details?spuNo=7646924376&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike trail",25,"https://cdn2.hipobuy.com/prod/order/D2602101988308326/checkPhotos/20260213/processed_8cbd490f-10f6-48ea-a081-d54da70e6e0a_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7668586661&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Short burberry",14,"https://cdn2.hipobuy.com/prod/order/D2601151995763632/checkPhotos/20260119/processed_2d728204-5cce-4924-a3f4-00e70ceba680_w.webp","https://hipobuy.com/pages/goods/details?channelId=weidian&spuNo=7420378750&inviteCode=E6EMQHWWA");
+  addArticle("Bas ou haut nouveau nike tech fleece",29,"https://cdn2.hipobuy.com/prod/order/D2602261059371352/checkPhotos/20260301/processed_15acbc09-ac4e-4feb-846b-f0d702a61589_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7661873720&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike trail (authentique)",26,"https://cdn2.hipobuy.com/prod/order/D2511240222844340/checkPhotos/20251126/processed_458ecbb1-2e8e-430c-9878-7b67fe3fc7a9_w.webp","https://hipobuy.com/pages/goods/details?id=906194017936&channel=TAOBAO&inviteCode=E6EMQHWWA");
+  addArticle("Bas running essentiel (taille femme authentique)",30,"https://cdn2.hipobuy.com/prod/order/D2601010114413212/checkPhotos/20260103/processed_be0994b8-da9b-483c-822f-8ecfae045368_w.webp","https://hipobuy.com/pages/goods/details?spuNo=687913202524&channel=1&inviteCode=E6EMQHWWA");
+  addArticle("Bas challenger authentique",23,"https://cdn2.hipobuy.com/prod/order/D2512311394977605/checkPhotos/20260103/processed_b823be02-2c30-44cb-b4d1-fadb278d8334_w.webp","https://hipobuy.com/pages/goods/details?id=726299037292&channel=TAOBAO&inviteCode=E6EMQHWWA");
+  addArticle("Bas nike tech noir",32,"https://cdn2.hipobuy.com/prod/order/D2602240437564995/checkPhotos/20260301/processed_3c8768bf-adb1-4b7c-acfd-73333b0f47da_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7620898876&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Haut nike tech noir",34,"https://img.sanishtech.com/u/fb99a389dbd6679d44f87b2f973ec529.webp","https://hipobuy.com/pages/goods/details?spuNo=7620898876&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Veste under blanche hybride",28,"https://cdn2.hipobuy.com/prod/order/D2602072021012144/checkPhotos/20260213/processed_3e211f9f-038d-4aa2-aa9f-ad8c39057bfc_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7660587496&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Bas phenom élite (de ljc)",20,"https://cdn2.hipobuy.com/prod/order/D2603221955397391/checkPhotos/20260325/processed_5089b089-4db0-40b1-ad3b-b5cf90e30ec6_w.webp","https://hipobuy.com/pages/goods/details?id=7657690605&channel=WEIDIAN&inviteCode=E6EMQHWWA");
+  addArticle("Bas running zabuza",17,"https://cdn2.hipobuy.com/prod/order/D2602031076316959/checkPhotos/20260207/processed_8f44158b-d7ba-429a-806f-5708063daa49_w.webp","https://hipobuy.com/pages/goods/details?spuNo=985265774753&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike aeroloft",14,"https://cdn2.hipobuy.com/prod/order/D2511282247709758/checkPhotos/20251208/processed_bea2a19f-6601-4862-aefc-da8ae4f8153f_w.webp","https://hipobuy.com/pages/goods/details?spuNo=977357364534&channel=1&inviteCode=E6EMQHWWA");
+  addArticle("Haut nike tech gris",33,"https://cdn2.hipobuy.com/prod/order/D2602240437564995/checkPhotos/20260301/processed_91339ad4-b27c-4e44-bced-9500ca90c228_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7635283602&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Bas nike tech gris",32,"https://file.uufinds.com/product/2026/01/19/2013143897256054785/qc/2c9280869bba82a3019bd530f9fe7ebe.webp","https://hipobuy.com/pages/goods/details?spuNo=7635283602&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Demi-zip nike react winter warrior",28,"https://cdn2.hipobuy.com/prod/order/D2512130422313677/checkPhotos/20251218/processed_f25afb27-9d74-4901-9c0b-f3b36ec6d463_w.webp","https://hipobuy.com/pages/goods/details?id=998768306555&channel=TAOBAO&inviteCode=E6EMQHWWA");
+  addArticle("Nike TN Noir",17,"https://cdn2.hipobuy.com/prod/order/D2601072298786108/checkPhotos/20260112/processed_c128bb19-5818-409f-9e8f-14c5777f3b9c-1_w.webp","https://hipobuy.com/pages/goods/details?spuNo=943774063436&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Maillot real 24-25",5,"https://cdn2.hipobuy.com/prod/order/D2602190014512392/checkPhotos/20260227/processed_8d1920be-e2f0-47a5-ab16-c1dc03421943_w.webp","https://hipobuy.com/pages/goods/details?spuNo=817322609814&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Cargo C.P Company",25,"https://cdn2.hipobuy.com/prod/order/D2602240427294332/checkPhotos/20260301/processed_8e90d304-e90f-4aba-b879-4e9ecac2ee7d_w.webp","https://hipobuy.com/pages/goods/details?spuNo=1013720975249&channel=1&inviteCode=E6EMQHWWA");
+  addArticle("Veste nike tokyo",32,"https://cdn2.hipobuy.com/prod/order/D2602251612305581/checkPhotos/20260301/processed_b44d9059-12bb-4031-8ec1-5b3318f70f3c_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7648191801&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("T-shirt under",3,"https://cdn2.hipobuy.com/prod/order/D2602060546394211/checkPhotos/20260208/processed_d618fbaa-7abe-44c1-b426-dcbf22ec249d_w.webp","https://hipobuy.com/pages/goods/details?spuNo=900050836801&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Bas division araignée",16,"https://cdn2.hipobuy.com/prod/order/D2602100153173345/checkPhotos/20260213/processed_a91f867f-af6c-4cc3-9b00-0ff25cb514c6_w.webp","https://hipobuy.com/pages/goods/details?spuNo=959870205213&channel=0&inviteCode=E6EMQHWWA");
+  addArticle("Jogging under",11,"https://cdn2.hipobuy.com/prod/order/D2602060437753827/checkPhotos/20260209/processed_4c83769f-eb43-4a16-988c-72c150b908c6_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7552603667&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Veste burberry",20,"https://cdn2.hipobuy.com/prod/order/D2602230248523632/checkPhotos/20260227/processed_6ac1e2f7-5f26-44b8-ad19-21171dc87c78_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7636475865&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Yezzy wave (PLUSIEURS COULEURS)",46,"https://cdn2.hipobuy.com/prod/order/D2602250558356350/checkPhotos/20260301/processed_3971ec6b-05fa-49fa-bb10-063d35fb4b52_w.webp","https://hipobuy.com/pages/goods/details?spuNo=7614407370&channel=weidian&inviteCode=E6EMQHWWA");
+  addArticle("Bas division rare (authentique)",45,"https://cdn2.hipobuy.com/prod/order/D2512041595054795/checkPhotos/20251208/processed_38f85c4a-7cb8-465f-985b-00509879e51c_w.webp","https://hipobuy.com/pages/goods/details?spuNo=927019&inviteCode=E6EMQHWWA");
+
+  // EXEMPLES POUR LES VENDEURS (Laisse vide si tu n'en as pas encore)
+  addVendeur("Goat Official", "https://i.imgur.com/w0MAvg6.png", "https://hipobuy.com");
+
+  // --- LOGIQUE INTERACTIVE (RECHERCHE, TRI, TABS) ---
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+  }
+
+  function switchTab(tab) {
+    currentTab = tab;
+    document.getElementById('articles').style.display = (tab === 'articles') ? 'block' : 'none';
+    document.getElementById('vendeurs').style.display = (tab === 'vendeurs') ? 'block' : 'none';
+    
+    document.getElementById('btn-articles').classList.toggle('active', tab === 'articles');
+    document.getElementById('btn-vendeurs').classList.toggle('active', tab === 'vendeurs');
+    
+    document.getElementById('mobileMenu').style.display = 'none';
+    renderAll();
+  }
+
+  function renderAll() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const sort = document.getElementById('sortOption').value;
+
+    if (currentTab === 'articles') {
+      let filtered = articles.filter(a => a.name.toLowerCase().includes(search));
+      
+      if (sort === 'recent') filtered.sort((a, b) => b.id - a.id);
+      if (sort === 'old') filtered.sort((a, b) => a.id - b.id);
+      if (sort === 'low') filtered.sort((a, b) => a.price - b.price);
+      if (sort === 'high') filtered.sort((a, b) => b.price - a.price);
+
+      let html = '';
+      filtered.forEach(a => {
+        html += `
+          <a class="card" href="${a.link}" target="_blank">
+            <div class="card-img-wrapper">
+              <img src="${a.image}" alt="${a.name}" loading="lazy">
+            </div>
+            <div class="card-body">
+              <span class="name">${a.name}</span>
+              <div class="card-footer">
+                <span class="price">${a.price.toFixed(2)} €</span>
+                <span class="buy-btn">Lien</span>
+              </div>
+            </div>
+          </a>`;
+      });
+      document.getElementById('articleGrid').innerHTML = html || '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted);">Aucun article trouvé.</p>';
+    } else {
+      let filtered = vendeurs.filter(v => v.name.toLowerCase().includes(search));
+      let html = '';
+      filtered.forEach(v => {
+        html += `
+          <a class="card" href="${v.link}" target="_blank">
+            <div class="card-img-wrapper">
+              <img src="${v.image}" alt="${v.name}" loading="lazy">
+            </div>
+            <div class="card-body">
+              <span class="name">${v.name}</span>
+              <div class="card-footer">
+                <span class="price">Shop</span>
+                <span class="buy-btn">Visiter</span>
+              </div>
+            </div>
+          </a>`;
+      });
+      document.getElementById('vendeurGrid').innerHTML = html || '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted);">Aucun vendeur trouvé.</p>';
+    }
+  }
+
+  // --- POPUP HIPOBUY CONTROLS ---
+  function closePopup() {
+    if (document.getElementById('noMore').checked) {
+      localStorage.setItem('hideHipoPopup', 'true');
+    }
+    document.getElementById('popupHipo').style.display = 'none';
+  }
+
+  // Lancement automatique au chargement de la page
+  window.onload = function() {
+    renderAll();
+    if (!localStorage.getItem('hideHipoPopup')) {
+      setTimeout(() => {
+        document.getElementById('popupHipo').style.display = 'flex';
+      }, 2500); // S'affiche après 2.5 secondes
+    }
+  };
+</script>
 
 </body>
 </html>
