@@ -404,11 +404,11 @@
   // Lancement automatique au chargement de la page
   window.onload = function() {
     renderAll();
-    if (!localStorage.getItem('hideHipoPopup')) {
-      setTimeout(() => {
-        document.getElementById('popupHipo').style.display = 'flex';
-      }, 2500); // S'affiche après 2.5 secondes
-    }
+    // Force l'affichage du pop-up après 1 seconde, même si on a coché la case
+    setTimeout(() => {
+      document.getElementById('popupHipo').style.display = 'flex';
+    }, 1000);
+  };
   };
 </script>
 
